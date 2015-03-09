@@ -43,6 +43,47 @@ bool ParseHttpParms(const std::string & str,std::map<std::string,std::string> * 
   }
   return true;
 }
+// utf8字符串边界，最后一个位置是字符串的长度，用于哨兵便于处理
+const unsigned char MASK1 = 0b10000000;
+const unsigned char MASK2 = 0b11000000;
+const unsigned char MASK3 = 0b11100000;
+bool Utf8CharBoundarys(const std::string & str,std::vector<size_t> * pos) {
+  (*pos).clear();
+  size_t i = 0;
+  for ( ; i < str.size(); ) {
+    unsigned char c = str[i];
+    if ( !(c & MASK1) ) (*pos).push_back(i++);
+    else if ( (c & MASK3) == MASK3 ) {
+      (*pos).push_back(i);
+      i += 3;
+    }
+    else if ( (c & MASK2) == MASK2 ) {
+      (*pos).push_back(i);
+      i += 3;
+    }
+    else return false;
+  }
+  (*pos).push_back(i);
+  return true;
+}
+void GenGRAM(const std::string & str, int LEN, std::vector<std::string> * grams) {
+  (*grams).clear();
+  size_t size = str.size();
+  if ( size < LEN ) return;
+  if ( size == LEN ) { (*grams).push_back(str); return}
+  for 
+}
+int main(int argc, const char *argv[])
+{
+  std::vector<size_t> pos;
+  std::string str = "12如果UNICODE字符由2个字节表示，则编码成";
+  if (Utf8CharBoundarys(str, &pos) == true) {
+  for (int i = 0; i < pos.size() - 1; i++) {
+    std::cout << str.substr(pos[i],pos[i+1] - pos[i]) << std::endl;
+  }
+  }
+  return 0;
+}
 /*
 void print(std::vector<std::string> result) {
   for (std::vector<std::string>::iterator it = result.begin(); it != result.end(); it++) {

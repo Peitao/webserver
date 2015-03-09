@@ -1,5 +1,5 @@
 OBJS = main.o query_process.o searcher.o
-CFLAGS += -I ../deps/libevent-2.0.21-stable/include/ -O2 --std=c++0x -I ../net/
+CFLAGS += -I ../deps/libevent-2.0.21-stable/include/ -O2 --std=c++0x -I ../net/ 
 LIB += -levent -L../deps/libevent-2.0.21-stable/lib/ -lrt -pthread -lthenet -L../net/
 
 all: $(OBJS)

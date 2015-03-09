@@ -28,9 +28,12 @@ bool Searcher::Search(WebServer::HttpReqResq * phttp) {
   QueryProcess::RawQuery raw_query;
   QueryProcess::ParseFromEvhttpRequest(phttp->req, &raw_query);
   //请求索引
+  std::cout << raw_query.reqStr << std::endl;
+  std::cout << raw_query.path << std::endl;
   std::cout << raw_query.query << std::endl;
   //返回结果
   evbuffer_add(phttp->buf, raw_query.query.c_str(), raw_query.query.size());
+  evhttp_add_header(phttp->req->output_headers, "Content-Type", "text/html; charset=UTF-8");
 
 
   phttp->done();
